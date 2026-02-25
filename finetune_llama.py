@@ -5,10 +5,13 @@ from unsloth import FastLanguageModel
 from transformers import TrainingArguments
 from trl import SFTTrainer
 
-model_name = "meta-llama/Llama-3.2-3B"
+model_name = "unsloth/Llama-3.2-1B-Instruct"
 max_seq_length = 1024
 dtype = torch.float16
 load_in_4bit = True
+
+torch.cuda.empty_cache()
+gc.collect()
 
 #load model
 model, tokenizer = FastLanguageModel.from_pretrained(
@@ -24,24 +27,23 @@ model = FastLanguageModel.get_peft_model(
     r = 8,
     target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"],
     lora_alpha = 16,
-    lora_dropout = 0.05,
+    lora_dropout = 0,
     bias = "none",
-    use_gradient_checkpointing = True,
+    use_gradient_checkpointing = "unsloth",
 )
 
 #load dataset
 dataset = load_dataset("json", data_files="med_training_data.json", split="train")
 
 def format_prompt(example):
+
+    eos = tokenizer.eos_token
     return {
         "text": f"""### Instruction:
-{example['instruction']}
-
-### Input:
 {example['input']}
 
 ### Response:
-{example['output']}"""
+{example['output']}{eos}""" 
     }
 
 
@@ -57,9 +59,9 @@ trainer = SFTTrainer(
     args = TrainingArguments(
         per_device_train_batch_size = 1,
         gradient_accumulation_steps = 4, #batch size of 4
-        warmup_steps = 10,
-        max_steps = 300,
-        learning_rate = 1e-4,
+        warmup_steps = 15, #protect base weight
+        max_steps = 300,   #short training to prevent overfitting
+        learning_rate = 3e-5, #prevent forgetting
         fp16 = True,
         logging_steps = 10,
         output_dir = "outputs",

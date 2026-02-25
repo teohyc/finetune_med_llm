@@ -2,6 +2,6 @@
 /llama.cpp
 /nih_reports_xml
 /unsloth_compiled_cache
-/NLMCXR_reports.tgze
-/llama3.2_med_xray_model
-/llama3.2_med_xray_model_gguf
+/NLMCXR_reports.tgz
+/llama3.2_1B_med_xray_report_model
+/llama3.2_1B_med_xray_report_model_gguf
