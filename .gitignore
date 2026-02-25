@@ -1,7 +1,8 @@
 /.venv
 /llama.cpp
 /nih_reports_xml
+/outputs
 /unsloth_compiled_cache
 /NLMCXR_reports.tgz
-/llama3.2_1B_med_xray_report_model
-/llama3.2_1B_med_xray_report_model_gguf
+/med_xray_model2
+/med_xray_model2_gguf/llama-3.2-1b-instruct.Q4_K_M.gguf

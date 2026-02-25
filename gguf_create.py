@@ -11,7 +11,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 #export to gguf
 model.save_pretrained_gguf(
-    "llama3.2_1B_med_xray_report_model",            
+    "med_xray_model2",            
     tokenizer, 
     quantization_method = "q4_k_m" 
 )

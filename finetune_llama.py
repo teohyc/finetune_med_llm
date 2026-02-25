@@ -24,10 +24,10 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 #lora adapter
 model = FastLanguageModel.get_peft_model(
     model,
-    r = 8,
+    r = 16,
     target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"],
     lora_alpha = 16,
-    lora_dropout = 0,
+    lora_dropout = 0.05,
     bias = "none",
     use_gradient_checkpointing = "unsloth",
 )
@@ -58,17 +58,18 @@ trainer = SFTTrainer(
     max_seq_length = max_seq_length,
     args = TrainingArguments(
         per_device_train_batch_size = 1,
-        gradient_accumulation_steps = 4, #batch size of 4
-        warmup_steps = 15, #protect base weight
-        max_steps = 300,   #short training to prevent overfitting
-        learning_rate = 3e-5, #prevent forgetting
+        gradient_accumulation_steps = 8, #batch size of 8
+        warmup_ratio = 0.1, #protect base weight
+        max_steps = 400,   #short training to prevent overfitting
+        learning_rate = 2e-4, #prevent forgetting
         fp16 = True,
         logging_steps = 10,
         output_dir = "outputs",
         optim = "paged_adamw_8bit",
         lr_scheduler_type = "cosine",
+        weight_decay= 0.01,
         save_strategy = "steps",
-        save_steps = 100,
+        save_steps = 200,
     )
 )
 
