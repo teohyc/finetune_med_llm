@@ -1,4 +1,5 @@
 /.venv
+/llama.cpp
 /nih_reports_xml
 /unsloth_compiled_cache
 /NLMCXR_reports.tgze
