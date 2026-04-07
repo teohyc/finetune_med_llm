@@ -7,3 +7,4 @@ ollama create llama3.2-1B-radiologist_reporter -f Modelfile
 
 Training data of radiology reports from NIH.
 (https://openi.nlm.nih.gov/imgs/collections/NLMCXR_reports.tgz)
+Model at: https://huggingface.co/teohyc/X-Ray_Med_Reporter-llama3.2-1B
